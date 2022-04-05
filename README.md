@@ -1,8 +1,9 @@
 # 19307110233
 Neural_Network
-#一.构建两层神经网络分类器
 
-##1.初始化网络参数
+一.构建两层神经网络分类器
+
+1.初始化网络参数
 ```
     def __init__(self, input_size, hidden_size, output_size, weight_init_std = 0.01):
         # 初始化
@@ -12,7 +13,7 @@ Neural_Network
         self.params['W2'] = weight_init_std * np.random.randn(hidden_size, output_size)
         self.params['b2'] = np.zeros(output_size)
 ```
-##2.激活函数，前向传播
+2.激活函数，前向传播
 激活函数选择sigmoid函数，输出层选择用softmax进行输出，然后进行前向传播
 ```commandline
 def sigmoid(x):
@@ -43,7 +44,7 @@ def softmax(x):
 ```
 
 
-##3.loss计算，L2正则化
+3.loss计算，L2正则化
 选择交叉熵损失函数，并进行L2正则化，正则化强度选择1e-4大小
 ```commandline
     def loss(self,x, t):
@@ -62,7 +63,7 @@ def softmax(x):
         reg_loss = 0.5 * reg * np.sum(W1 * W1) + 0.5 * reg * np.sum(W2 * W2)  # L2正则化
         return data_loss + reg_loss
 ```
-##4.反向传播计算梯度
+4.反向传播计算梯度
 ```commandline
     def backward(self, x, t):
         W1, W2 = self.params['W1'], self.params['W2']
@@ -87,7 +88,7 @@ def softmax(x):
         return grads
 ```
 
-##5.计算准确率
+5.计算准确率
 ```commandline
     def accuracy(self, x, t):
         y = self.forward(x)
@@ -98,8 +99,9 @@ def softmax(x):
         return accuracy
 ```
 
-#二.训练并测试该网络
-##1.导入数据集
+二.训练并测试该网络
+
+1.导入数据集
 从keras.datasets库中导入mnist数据集
 ```commandline
 (train_images,train_labels),(test_images,test_labels)=mnist.load_data()
@@ -108,7 +110,7 @@ test_images=test_images.reshape((10000,28*28)).astype('float')
 train_labels=to_categorical(train_labels)
 test_labels=to_categorical(test_labels)
 ```
-##2.训练与测试预准备
+2.训练与测试预准备
 首先设定好必要的超参数，更新次数iters_num =6000,学习率learning_rate = 0.01
 学习率衰减参数learning_rate_decay = 0.90
 ```
@@ -133,7 +135,7 @@ test_labels=to_categorical(test_labels)
 ```commandline
         network = Neural_Network(input_size=784, hidden_size=50, output_size=10)  # 输入层为784，隐藏层节点数50，输出层为10
 ```
-##3.正式开始训练
+3.正式开始训练
 下面正式开始训练，更新参数次数6000次，每次随机抽取100个训练图片来更新参数,并记录下每次的train_loss值
 ```commandline
         for i in range(iters_num):
@@ -149,7 +151,7 @@ test_labels=to_categorical(test_labels)
             loss = network.loss(x_batch, t_batch)
             train_loss_list.append(loss)
 ```
-##4.每隔一个epoch进行测试
+4.每隔一个epoch进行测试
 最后每隔一个epoch输出train_acc，test_loss，test_acc，并使学习率下降
 ```commandline
             if i % epoch == 0:
@@ -163,7 +165,7 @@ test_labels=to_categorical(test_labels)
                 learning_rate *= learning_rate_decay
                 print("train acc : %.7s, test acc : %.7s,test loss : %.7s"%(train_acc,test_acc,test_loss))
 ```
-##5.画曲线及保存模型，可视化网络参数
+5.画曲线及保存模型，可视化网络参数
 最后将train_loss,test_loss,train_acc,test_acc曲线画出，并将W1可视化，保存模型
 ```commandline
 #保存模型
